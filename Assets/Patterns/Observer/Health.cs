@@ -1,25 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class Health : MonoBehaviour
 {
-    int currentHealth = 0;
+    [SerializeField] float fullHealth = 100f;
+    [SerializeField] float drainPerSecond = 2f;
+    float currentHealth = 0;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-
+        ResetHealth();
+        StartCoroutine(HealthDrain());
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
+        GetComponent<Level>().onLevelUpAction += ResetHealth;
+    }
 
+    private void OnDisable()
+    {
+        GetComponent<Level>().onLevelUpAction -= ResetHealth;
     }
 
     public float GetHealth()
     {
         return currentHealth;
+    }
+
+    private void ResetHealth()
+    {
+        currentHealth = fullHealth;
+    }
+
+    private IEnumerator HealthDrain()
+    {
+        while (currentHealth > 0)
+        {
+            currentHealth -= drainPerSecond;
+            yield return new WaitForSeconds(1);
+        }
     }
 }

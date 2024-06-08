@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Debugger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Health health = GetComponent<Health>();
+        Level level = GetComponent<Level>();
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+            Debug.Log($"Exp: {level.GetExperience()}, Level: {level.GetLevel()}, Health: {health.GetHealth()}");
+        }
     }
 }

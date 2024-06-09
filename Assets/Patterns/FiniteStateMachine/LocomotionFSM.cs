@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class LocomotionFSM : MonoBehaviour
 {
-    enum State
+    private enum State
     {
         Grounded,
         InAir,
         Crouching
     }
 
-    State currentState = State.Grounded;
+    private State currentState = State.Grounded;
 
     public void Jump()
     {
